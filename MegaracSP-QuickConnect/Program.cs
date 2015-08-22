@@ -12,11 +12,28 @@ namespace MegaracSP_QuickConnect
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            // Server value provided (silent execution)
+            if (args.Length == 1)
+            {
+                // Silently fail if invalid server provided
+                // Array is 0-indexed but user provided values
+                // are probably 1-indexed
+                // So subtract 1
+                // Also this is naive parsing
+                // We're only expecting a single number!
+                // Someone want to make a proper parser?
+                ServerManager sm = ServerManager.Instance;
+                int i = Convert.ToInt32(args[0]);
+                MegaracKVM.DownloadAndRunKVM(sm.servers[i - 1]);
+            }
+            else
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new Form1());
+            }
         }
     }
 }
